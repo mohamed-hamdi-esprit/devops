@@ -1,0 +1,19 @@
+cat << 'EOF' > Jenkinsfile
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/mohamed-hamdi-esprit/devops.git'
+            }
+        }
+
+        stage('Compile') {
+            steps {
+                sh 'mvn -f DevOps-AppGestionDesProjets-main/backend/pom.xml compile'
+            }
+        }
+    }
+}
+EOF
