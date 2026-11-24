@@ -19,7 +19,7 @@ pipeline {
 
         stage('Test') {
             steps {
-                sh 'mvn -B -f DevOps-AppGestionDesProjets-main/backend/pom.xml test -Dtest=!BackendApplicationTests -DfailIfNoTests=false'
+                sh 'mvn -B -f DevOps-AppGestionDesProjets-main/backend/pom.xml test -Dtest=!BackendApplicationTests -DfailIfNoTests=false -Dsurefire.failIfNoSpecifiedTests=false'
             }
             post {
                 always {
