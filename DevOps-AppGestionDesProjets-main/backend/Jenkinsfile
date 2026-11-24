@@ -21,11 +21,6 @@ pipeline {
             steps {
                 sh 'mvn -B -f DevOps-AppGestionDesProjets-main/backend/pom.xml test -Dtest=!BackendApplicationTests -DfailIfNoTests=false -Dsurefire.failIfNoSpecifiedTests=false'
             }
-            post {
-                always {
-                    junit allowEmptyResults: true, testResults: 'DevOps-AppGestionDesProjets-main/backend/target/surefire-reports/*.xml'
-                }
-            }
         }
 
         stage('Package') {
