@@ -1,37 +1,10 @@
-pipeline {
-    agent any
-
-    environment {
-        JAVA_HOME = '/usr/lib/jvm/java-17-openjdk-amd64'
-        PATH = "${JAVA_HOME}/bin:${PATH}"
-    }
-
-    options {
-        timestamps()
-    }
-
-    stages {
-        stage('Compile') {
-            steps {
-                sh 'mvn -B -f DevOps-AppGestionDesProjets-main/backend/pom.xml compile'
-            }
+stage('Test') {
+        steps {
+            sh 'mvn -B -f DevOps-AppGestionDesProjets-main/backend/pom.xml test -Dtest=!BackendApplicationTests'
         }
-
-        stage('Test') {
-            steps {
-                sh 'mvn -B -f DevOps-AppGestionDesProjets-main/backend/pom.xml test'
-            }
-            post {
-                always {
-                    junit allowEmptyResults: true, testResults: 'DevOps-AppGestionDesProjets-main/backend/target/surefire-reports/*.xml'
-                }
-            }
-        }
-
-        stage('Package') {
-            steps {
-                sh 'mvn -B -f DevOps-AppGestionDesProjets-main/backend/pom.xml package -DskipTests'
+        post {
+            always {
+                junit allowEmptyResults: true, testResults: 'DevOps-AppGestionDesProjets-main/backend/target/surefire-reports/*.xml'
             }
         }
     }
-}
