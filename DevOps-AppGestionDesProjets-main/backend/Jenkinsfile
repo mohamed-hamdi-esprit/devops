@@ -1,16 +1,31 @@
 pipeline {
     agent any
 
+    options {
+        timestamps()
+    }
+
     stages {
-        stage('Checkout') {
+        stage('Compile') {
             steps {
-                git branch: 'main', url: 'https://github.com/mohamed-hamdi-esprit/devops.git'
+                sh 'mvn -B -f DevOps-AppGestionDesProjets-main/backend/pom.xml compile'
             }
         }
 
-        stage('Compile') {
+        stage('Test') {
             steps {
-                sh 'mvn -f DevOps-AppGestionDesProjets-main/backend/pom.xml compile'
+                sh 'mvn -B -f DevOps-AppGestionDesProjets-main/backend/pom.xml test'
+            }
+            post {
+                always {
+                    junit allowEmptyResults: true, testResults: 'DevOps-AppGestionDesProjets-main/backend/target/surefire-reports/*.xml'
+                }
+            }
+        }
+
+        stage('Package') {
+            steps {
+                sh 'mvn -B -f DevOps-AppGestionDesProjets-main/backend/pom.xml package -DskipTests'
             }
         }
     }

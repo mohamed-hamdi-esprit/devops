@@ -1,17 +1,10 @@
-pipeline {
-    agent any
+Vagrant.configure("2") do |config|
+  config.vm.box = "bento/ubuntu-24.04"
 
-    stages {
-        stage('Checkout') {
-            steps {
-                git branch: 'main', url: 'https://github.com/mohamed-hamdi-esprit/devops.git'
-            }
-        }
+  config.vm.network "forwarded_port", guest: 8080, host: 8080
 
-        stage('Compile') {
-            steps {
-                sh 'mvn compile'
-            }
-        }
-    }
-}
+  config.vm.provider "virtualbox" do |vb|
+    vb.memory = "2048"
+    vb.cpus = 2
+  end
+end
